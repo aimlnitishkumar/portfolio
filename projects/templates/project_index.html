@@ -1,59 +1,66 @@
 {% extends "base.html" %}
 {% block content %}
 
-<div class="hero-section text-center">
+<section class="hero-section text-center">
     <div class="container" data-aos="zoom-in">
-        <h1 class="display-3 fw-bold">Hi, I'm <span class="text-info">nitish !</span></h1>
-        <p class="fs-4">CSE Student & Aspiring Software Engineer</p>
-        <div class="mt-4">
-            <a href="#projects" class="btn btn-info btn-lg px-4 me-2">View Work</a>
-            <a href="{% url 'contact' %}" class="btn btn-outline-light btn-lg px-4">Let's Talk</a>
-        </div>
+        <h1 class="display-1 fw-bold">Code. <span class="text-info">Create.</span> Deploy.</h1>
+        <h3 class="mb-4">I'm a <span id="type-text" class="text-warning"></span></h3>
+        <a href="#projects" class="btn btn-info btn-lg px-5 text-white shadow">Explore Projects</a>
     </div>
-</div>
+</section>
 
-<div class="hero-section text-center d-flex align-items-center justify-content-center" style="min-height: 80vh;">
-    <div class="container">
-        <h1 class="display-2 fw-bold mb-3" data-aos="zoom-in">
-            Hi, I'm <span class="text-info">[Your Name]</span>
-        </h1>
-        <h3 class="fw-light">
-            I am a <span id="typewriter" class="text-warning fw-bold"></span>
-        </h3>
-        <div class="mt-5 floating">
-            <i class="fas fa-chevron-down fa-2x text-light"></i>
+<div class="container">
+    <section id="about" class="py-5 mt-5" data-aos="fade-up">
+        <div class="row g-5 align-items-center">
+            <div class="col-md-6">
+                <h2 class="fw-bold"><i class="fas fa-user-graduate me-3"></i>Who Am I?</h2>
+                <p class="lead mt-3">I'm a CSE student dedicated to building high-performance web applications using the Django ecosystem.</p>
+                <p class="text-muted">I specialize in translating complex requirements into elegant code. Always learning, always building.</p>
+            </div>
+            <div class="col-md-6">
+                <div class="p-4 bg-white shadow rounded-4 text-center border-bottom border-info border-5">
+                    <h5 class="mb-4">My Tech Stack</h5>
+                    <div class="d-flex flex-wrap justify-content-center gap-2">
+                        <span class="badge bg-secondary p-2">Python</span>
+                        <span class="badge bg-secondary p-2">Django</span>
+                        <span class="badge bg-secondary p-2">PostgreSQL</span>
+                        <span class="badge bg-secondary p-2">Bootstrap</span>
+                        <span class="badge bg-secondary p-2">Git</span>
+                    </div>
+                </div>
+            </div>
         </div>
-    </div>
+    </section>
+
+    <section id="projects" class="py-5">
+        <h2 class="text-center fw-bold mb-5" data-aos="fade-up">My Portfolio</h2>
+        <div class="row">
+            {% for project in projects %}
+            <div class="col-md-4 mb-4" data-aos="flip-right">
+                <div class="card h-100 shadow border-0 overflow-hidden" data-tilt>
+                    {% if project.image %}
+                    <img src="{{ project.image.url }}" class="card-img-top" style="height:200px; object-fit:cover;">
+                    {% endif %}
+                    <div class="card-body">
+                        <h5 class="card-title fw-bold">{{ project.title }}</h5>
+                        <p class="card-text text-muted small">{{ project.description|truncatechars:100 }}</p>
+                        <a href="{% url 'project_detail' project.id %}" class="btn btn-dark w-100 mt-2">View Case Study</a>
+                    </div>
+                </div>
+            </div>
+            {% empty %}
+            <p class="text-center">No projects yet. Go to <a href="/admin">Admin</a>.</p>
+            {% endfor %}
+        </div>
+    </section>
 </div>
 
 <script src="https://unpkg.com/typewriter-effect@latest/dist/core.js"></script>
 <script>
-    var app = document.getElementById('typewriter');
-    var typewriter = new Typewriter(app, { loop: true, delay: 75 });
-    typewriter
-        .typeString('CSE Student')
-        .pauseFor(1000).deleteAll()
-        .typeString('Full-Stack Developer')
-        .pauseFor(1000).deleteAll()
-        .typeString('Problem Solver')
-        .pauseFor(1000).start();
+    new Typewriter('#type-text', {
+        strings: ['aiml Student', 'django backend Engineer', 'full stack Developer'],
+        autoStart: true,
+        loop: true,
+    });
 </script>
-
-<h2 id="projects" class="text-center mt-5 mb-5 fw-bold">Featured Projects</h2>
-<div class="col-md-4 mb-4" data-aos="fade-up">
-    <div class="card glass-card shadow h-100" data-tilt data-tilt-max="10" data-tilt-speed="400" data-tilt-glare
-        data-tilt-max-glare="0.5">
-        {% if project.image %}
-        <img src="{{ project.image.url }}" class="card-img-top">
-        {% endif %}
-        <div class="card-body">
-            <h5 class="card-title fw-bold text-dark">{{ project.title }}</h5>
-            <p class="card-text">{{ project.description|truncatechars:70 }}</p>
-            <div class="d-flex justify-content-between align-items-center">
-                <span class="badge bg-dark">{{ project.technology }}</span>
-                <a href="{% url 'project_detail' project.pk %}" class="btn btn-sm btn-info text-white">Case Study</a>
-            </div>
-        </div>
-    </div>
-</div>
 {% endblock %}
