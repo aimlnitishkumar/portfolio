@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row mt-5">
+    <div class="col-md-8 offset-md-2">
+        <h1>{{ project.title }}</h1>
+        <hr>
+        {% if project.image %}
+            <img src="{{ project.image.url }}" class="img-fluid rounded mb-4" alt="{{ project.title }}">
+        {% endif %}
+        <h3>About the project</h3>
+        <p>{{ project.description }}</p>
+        
+        <div class="mt-4">
+            <h5>Technologies used:</h5>
+            <span class="badge bg-info text-dark">{{ project.technology }}</span>
+        </div>
+
+        <div class="mt-5">
+            <a href="{% url 'project_index' %}" class="btn btn-secondary">Back to Portfolio</a>
+            <a href="{{ project.github_link }}" class="btn btn-dark" target="_blank">View GitHub Repo</a>
+        </div>
+    </div>
+</div>
+{% endblock %}
