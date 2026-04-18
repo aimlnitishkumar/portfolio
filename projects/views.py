@@ -29,15 +29,5 @@ def contact_view(request):
 
 
 
-
-
-def guestbook_view(request):
-    messages = GuestbookMessage.objects.all().order_by('-created_at') # Newest first
-    if request.method == 'POST':
-        author = request.POST.get('author')
-        body = request.POST.get('body')
-        if author and body:
-            GuestbookMessage.objects.create(author=author, body=body)
-            # After posting, we show the updated list
-    
-    return render(request, 'guestbook.html', {'messages': messages})
+def chat_view(request):
+    return render(request, 'chat.html')

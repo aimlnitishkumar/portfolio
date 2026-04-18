@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8 col-lg-6">
+            <div class="card shadow-lg border-0 rounded-4 overflow-hidden">
+                <div class="card-header bg-primary text-white py-3 d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0"><i class="fas fa-bolt me-2"></i>Live Real-Time Chat</h5>
+                    <span class="badge bg-light text-primary">Online</span>
+                </div>
+                
+                <div id="chat-window" class="p-3 bg-light" style="height: 450px; overflow-y: auto;">
+                    <div class="text-center text-muted small mb-3">Welcome to the secure dev chat!</div>
+                    <div id="chat-messages"></div>
+                </div>
+
+                <div class="card-footer bg-white p-3 border-0">
+                    <div class="input-group">
+                        <input id="chat-input" type="text" class="form-control border-0 bg-light" placeholder="Type a message...">
+                        <button id="send-btn" class="btn btn-primary px-4"><i class="fas fa-paper-plane"></i></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // 1. Connect to the WebSocket
+    const protocol = window.location.protocol === 'https:' ? 'wss://' : 'ws://';
+    const chatSocket = new WebSocket(
+        protocol + window.location.host + '/ws/chat/'
+    );
+
+    // 2. When a message is received
+    chatSocket.onmessage = function(e) {
+        const data = JSON.parse(e.data);
+        const messagesDiv = document.querySelector('#chat-messages');
+        
+        // Create the message bubble
+        const msgHtml = `
+            <div class="mb-3 d-flex flex-column align-items-start">
+                <div class="p-3 rounded-4 shadow-sm bg-white" style="max-width: 85%; border-left: 4px solid #0d6efd;">
+                    <small class="text-primary fw-bold d-block mb-1">${data.user}</small>
+                    <span>${data.message}</span>
+                </div>
+            </div>
+        `;
+        
+        messagesDiv.innerHTML += msgHtml;
+        const windowDiv = document.querySelector('#chat-window');
+        windowDiv.scrollTop = windowDiv.scrollHeight; // Auto-scroll
+    };
+
+    // 3. Send message on click
+    document.querySelector('#send-btn').onclick = function() {
+        const input = document.querySelector('#chat-input');
+        if (input.value.trim() !== "") {
+            chatSocket.send(JSON.stringify({
+                'message': input.value,
+                'user': 'Nitish' // You can change this to a dynamic username later
+            }));
+            input.value = '';
+        }
+    };
+
+    // Send message on 'Enter' key
+    document.querySelector('#chat-input').onkeyup = function(e) {
+        if (e.keyCode === 13) document.querySelector('#send-btn').click();
+    };
+</script>
+{% endblock %}
