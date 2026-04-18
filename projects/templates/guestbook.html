@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+{% block content %}
+
+<style>
+    .message-thread {
+        max-height: 500px;
+        overflow-y: auto;
+        padding: 10px;
+        background: #f1f3f5;
+        border-radius: 15px;
+    }
+    .card-body {
+        border-radius: 15px;
+    }
+    /* Simple logic: messages move slightly when hovered */
+    .message-thread .card:hover {
+        transform: translateX(5px);
+        transition: 0.3s;
+    }
+</style>
+
+
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <h2 class="fw-bold mb-4 text-center">Friends Lounge</h2>
+            
+            <div class="card shadow-sm border-0 mb-5 p-4">
+                <form method="POST">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <input type="text" name="author" class="form-control" placeholder="Your Name" required>
+                    </div>
+                    <div class="mb-3">
+                        <textarea name="body" class="form-control" rows="3" placeholder="Write a message..." required></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary w-100">Post to Wall</button>
+                </form>
+            </div>
+
+            <div class="message-thread">
+                {% for msg in messages %}
+                <div class="card mb-3 border-0 shadow-sm" data-aos="fade-up">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between">
+                            <h6 class="fw-bold text-primary">{{ msg.author }}</h6>
+                            <small class="text-muted">{{ msg.created_at|timesince }} ago</small>
+                        </div>
+                        <p class="mb-0 mt-2">{{ msg.body }}</p>
+                    </div>
+                </div>
+                {% empty %}
+                <p class="text-center text-muted">No messages yet. Be the first to say hi!</p>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+<script>
+    // Refresh the page every 30 seconds (30000 milliseconds)
+    setInterval(function(){
+       // We only refresh if the user isn't currently typing in the textarea
+       const isTyping = document.activeElement.tagName === 'TEXTAREA' || 
+                        document.activeElement.tagName === 'INPUT';
+       
+       if (!isTyping) {
+           location.reload();
+       }
+    }, 30000); 
+</script>

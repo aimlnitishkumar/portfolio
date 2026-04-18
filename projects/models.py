@@ -19,3 +19,12 @@ class ContactMessage(models.Model):
 
     def __str__(self):
         return f"Message from {self.name}"
+
+
+class GuestbookMessage(models.Model):
+    author = models.CharField(max_length=50)
+    body = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.author} - {self.created_at.strftime('%Y-%m-%d %H:%M')}"
