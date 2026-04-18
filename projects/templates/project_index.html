@@ -12,39 +12,48 @@
     </div>
 </div>
 
-<div class="container mt-5">
-    <div class="row align-items-center" data-aos="fade-right">
-        <div class="col-md-6">
-            <h2 class="fw-bold mb-4">About Me</h2>
-            <p class="text-muted fs-5">I am a Computer Science student focused on building scalable web applications. I love solving complex problems with clean, efficient code.</p>
-        </div>
-        <div class="col-md-6 text-center" data-aos="fade-left">
-            <div class="p-4 bg-white rounded shadow-sm">
-                <h4 class="mb-3">Technical Stack</h4>
-                <div class="skill-badge"><i class="fab fa-python text-primary"></i> Python</div>
-                <div class="skill-badge"><i class="fas fa-server text-success"></i> Django</div>
-                <div class="skill-badge"><i class="fab fa-js text-warning"></i> JS</div>
-                <div class="skill-badge"><i class="fas fa-database text-danger"></i> SQL</div>
-            </div>
+<div class="hero-section text-center d-flex align-items-center justify-content-center" style="min-height: 80vh;">
+    <div class="container">
+        <h1 class="display-2 fw-bold mb-3" data-aos="zoom-in">
+            Hi, I'm <span class="text-info">[Your Name]</span>
+        </h1>
+        <h3 class="fw-light">
+            I am a <span id="typewriter" class="text-warning fw-bold"></span>
+        </h3>
+        <div class="mt-5 floating">
+            <i class="fas fa-chevron-down fa-2x text-light"></i>
         </div>
     </div>
+</div>
 
-    <h2 id="projects" class="text-center mt-5 mb-5 fw-bold">Featured Projects</h2>
-    <div class="row">
-        {% for project in projects %}
-        <div class="col-md-4 mb-4" data-aos="flip-left">
-            <div class="card shadow-sm h-100">
-                {% if project.image %}
-                <img src="{{ project.image.url }}" class="card-img-top" style="height:220px; object-fit:cover;">
-                {% endif %}
-                <div class="card-body">
-                    <h5 class="card-title fw-bold">{{ project.title }}</h5>
-                    <p class="card-text text-muted">{{ project.description|truncatechars:80 }}</p>
-                    <a href="{% url 'project_detail' project.pk %}" class="btn btn-primary w-100">Explore Project</a>
-                </div>
+<script src="https://unpkg.com/typewriter-effect@latest/dist/core.js"></script>
+<script>
+    var app = document.getElementById('typewriter');
+    var typewriter = new Typewriter(app, { loop: true, delay: 75 });
+    typewriter
+        .typeString('CSE Student')
+        .pauseFor(1000).deleteAll()
+        .typeString('Full-Stack Developer')
+        .pauseFor(1000).deleteAll()
+        .typeString('Problem Solver')
+        .pauseFor(1000).start();
+</script>
+
+<h2 id="projects" class="text-center mt-5 mb-5 fw-bold">Featured Projects</h2>
+<div class="col-md-4 mb-4" data-aos="fade-up">
+    <div class="card glass-card shadow h-100" data-tilt data-tilt-max="10" data-tilt-speed="400" data-tilt-glare
+        data-tilt-max-glare="0.5">
+        {% if project.image %}
+        <img src="{{ project.image.url }}" class="card-img-top">
+        {% endif %}
+        <div class="card-body">
+            <h5 class="card-title fw-bold text-dark">{{ project.title }}</h5>
+            <p class="card-text">{{ project.description|truncatechars:70 }}</p>
+            <div class="d-flex justify-content-between align-items-center">
+                <span class="badge bg-dark">{{ project.technology }}</span>
+                <a href="{% url 'project_detail' project.pk %}" class="btn btn-sm btn-info text-white">Case Study</a>
             </div>
         </div>
-        {% endfor %}
     </div>
 </div>
 {% endblock %}
